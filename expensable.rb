@@ -42,47 +42,24 @@ class ExpensableApp
     action = ""
 
     until action == "logout"
-        begin
-          puts expenses_table
-          action, id = categories_menu
-          case action
-          when "create" then puts "create_note"
-          when "show ID" then puts "update_note(id)"
-          when "update ID" then puts "delete_note(id)"
-          when "delete ID" then puts "toggle(id)"
-          when "add-to ID" then puts "add-to(id)"
-          when "toggle" then puts "toggle"
-          when "next" then puts "next"
-          when "prev" then puts "prev"
-          else puts "Invalid option"
-          end
-        rescue HTTParty::ResponseError => e
-          parsed_error = JSON.parse(e.message)
-          puts parsed_error
+      begin
+        puts expenses_table
+        action, id = categories_menu
+        case action
+        when "create" then puts "create_note"
+        when "show ID" then puts "update_note(id)"
+        when "update ID" then puts "delete_note(id)"
+        when "delete ID" then puts "toggle(id)"
+        when "add-to ID" then puts "add-to(id)"
+        when "toggle" then puts "toggle"
+        when "next" then puts "next"
+        when "prev" then puts "prev"
         end
+      rescue HTTParty::ResponseError => e
+        parsed_error = JSON.parse(e.message)
+        puts parsed_error
       end
-  end
-
-  def categories_table(transaction_type)
-    categories_data = @categories.select do |category|
-        category[:transaction_type] == transaction_type
     end
-
-    table = Terminal::Table.new
-    table.title = transaction_type.capitalize
-    table.headings = ["ID", "Category", "Total"]
-    table.rows = categories_data.map do |category|
-      [category[:id], category[:name], category[:transactions].size]
-    end
-    table
-  end
-
-  def expenses_table
-    categories_table("expense")
-  end
-
-  def income_table
-    categories_table("income")
   end
 
   def toggle
