@@ -34,20 +34,13 @@ module Helpers
     { email: email, password: password }
   end
 
-  # (options_line1, options_line2 = nil)
-  def get_with_options(options1, options2 = nil, required: true, default: nil)
-    action = ""
-    id = nil
-    loop do
-      puts options1.join(" | ")
-      puts options2.join(" | ") unless options2.nil?
-      print "> "
-      action, id = gets.chomp.split
-      break if options1.include?(action) || options2.include?(action) || (action.nil? && !required)
-
-      puts "Invalid option"
-    end
-    action.nil? && default ? [default] : [action, id]
+  def get_with_options(options1, options2 = nil)
+    puts options1.join(" | ")
+    puts options2.join(" | ") unless options2.nil?
+    print "> "
+    action, id = gets.chomp.split
+    id = id.to_i if !id.nil? && id.match(/^\d+$/)
+    [action, id]
   end
 
   def login_menu

@@ -1,22 +1,27 @@
 # Start here. Happy coding!
 require "terminal-table"
+require "date"
 require_relative "helpers/helpers"
 require_relative "services/user"
 require_relative "services/session"
 require_relative "handlers/session_handler"
 require_relative "services/categories"
-require_relative "services/transaction"
 require_relative "handlers/categories_handler"
+require_relative "services/transactions"
+require_relative "handlers/transactions_handler"
 
 class ExpensableApp
   include Helpers
   include SessionHandler
   include CategoriesHandler
+  include TransactionsHandler
 
   def initialize
     @user = nil
     @categories = []
-    # más variables?
+    @transactions = []
+    @date = Date.today
+    @expense = true
   end
 
   def start
@@ -29,6 +34,7 @@ class ExpensableApp
         when "login" then login
         when "create_user" then puts "create_user" # modificar
         when "exit" then puts goodbye
+        else puts "Invalid option"
         end
       rescue HTTParty::ResponseError => e
         parsed_error = JSON.parse(e.message)
@@ -42,32 +48,45 @@ class ExpensableApp
     action = ""
 
     until action == "logout"
+      puts categories_table
+      action, id = categories_menu
+      case action
+      when "create" then puts "create_note"
+      when "show" then transactions_page(id)
+      when "update" then puts "delete_note(id)"
+      when "delete" then puts "toggle(id)"
+      when "add-to" then puts "add-to(id)"
+      when "toggle" then toggle
+      when "next" then next_month_categories
+      when "prev" then prev_month_categories
+      when "logout" then puts welcome
+      else puts "Invalid option"
+      end
+    end
+  end
+
+  def transactions_page(category_id)
+    @transactions = Services::Transactions.index_transactions(@user[:token], category_id)
+    action = ""
+
+    until action == "back"
       begin
-        puts expenses_table
-        action, id = categories_menu
+        puts transactions_table(category_id)
+        action, id = transactions_menu
         case action
-        when "create" then puts "create_note"
-        when "show ID" then puts "update_note(id)"
-        when "update ID" then puts "delete_note(id)"
-        when "delete ID" then puts "toggle(id)"
-        when "add-to ID" then puts "add-to(id)"
-        when "toggle" then puts "toggle"
-        when "next" then puts "next"
-        when "prev" then puts "prev"
+        when "add" then puts "add_transaction"
+        when "update ID" then puts "update_transaction(id)"
+        when "delete ID" then puts "delete_transaction(id)"
+        when "next" then next_month_transactions(category_id)
+        when "prev" then prev_month_transactions(category_id)
+        when "back" then nil
+        else puts "Invalid option"
         end
       rescue HTTParty::ResponseError => e
         parsed_error = JSON.parse(e.message)
         puts parsed_error
       end
     end
-  end
-
-  def toggle
-    # if actual_page income_page
-    # expenses_page
-    # elsif actual_page expenses_page
-    # income_page
-    # end
   end
 end
 
