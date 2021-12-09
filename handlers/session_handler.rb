@@ -4,6 +4,6 @@ module SessionHandler
     @user = Services::Sessions.login(credentials)
     # notes_page
     puts "Welcome back #{@user[:first_name]} #{@user[:last_name]}"
-    puts "expenses_page"
+    categories_page
   end
 end

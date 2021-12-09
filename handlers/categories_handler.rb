@@ -1,0 +1,3 @@
+module CategoriesHandler
+
+end

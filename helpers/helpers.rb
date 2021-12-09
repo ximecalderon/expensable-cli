@@ -15,7 +15,6 @@ module Helpers
     ].join("\n")
   end
 
-<<<<<<< HEAD
 
   def get_string(label, required: false)
     input = ""
@@ -36,31 +35,18 @@ module Helpers
     { email: email, password: password } 
   end
 
-
-
-  def get_with_options(options, required: true, default: nil)
+  def get_with_options(options1, options2 = nil, required: true, default: nil) # (options_line1, options_line2 = nil)
     action = ""
     id = nil
     loop do
-      puts options.join(" | ")
+      puts options1.join(" | ")
+      puts options2.join(" | ") unless options2.nil?
       print "> "
       action, id = gets.chomp.split
-      break if options.include?(action) || (action.nil? && !required)
-
+      break if options1.include?(action) || options2.include?(action) || (action.nil? && !required)
       puts "Invalid option"
-=======
-  def get_with_options(options_line1, options_line2 = nil)
-    puts options_line1.join(" | ")
-    puts options_line2.join(" | ") unless options_line2.nil?
-    print "> "
-    action, id = gets.chomp.split
-    
-    if !id.nil? && id.match(/^\d+$/)
-        [action, id.to_i]
-    else
-        [action, id]
->>>>>>> a3a6f33 (Category class first layout)
     end
+    action.nil? && default ? [default] : [action, id]
   end
 
   def login_menu

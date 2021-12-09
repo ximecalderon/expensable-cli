@@ -5,11 +5,13 @@ require_relative "services/user"
 require_relative "services/session"
 require_relative "handlers/session_handler"
 require_relative "services/categories"
-require_relative "services/transactions"
+require_relative "services/transaction"
+require_relative "handlers/categories_handler"
 
 class ExpensableApp
   include Helpers
   include SessionHandler
+  include CategoriesHandler
 
   def initialize
     @user = nil
@@ -21,29 +23,22 @@ class ExpensableApp
     puts welcome
     action = ""
     until action == "exit"
-      # begin
-      #   action = login_menu[0]
-      #   case action
-      #   when "login" then login
-      #   when "create_user" then puts "create_user" # modificar
-      #   when "exit" then puts goodbye
-      #   end
-      # rescue HTTParty::ResponseError => e
-      #   parsed_error = JSON.parse(e.message)
-      #   puts parsed_error["errors"]
-      action = login_menu
-
-      case action
-      when "login" then login # modificar => class sessions
-      when "create_user" then puts "create_user" # modificar => class users
-      when "exit" then puts goodbye
-      else puts "Invalid option"
+      begin
+        action = login_menu[0]
+        case action
+        when "login" then login
+        when "create_user" then puts "create_user" # modificar
+        when "exit" then puts goodbye
+        end
+      rescue HTTParty::ResponseError => e
+        parsed_error = JSON.parse(e.message)
+        puts parsed_error["errors"]
       end
     end
   end
 
   def categories_page
-    @categories = Categories.index_categories(@user[:token])
+    @categories = Services::Categories.index_categories(@user[:token])
     action = ""
 
     until action == "logout"
@@ -83,7 +78,7 @@ class ExpensableApp
   end
 
   def expenses_table
-    categories_table("expenses")
+    categories_table("expense")
   end
 
   def income_table
