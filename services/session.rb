@@ -1,6 +1,7 @@
 require "httparty"
 require "json"
 
+<<<<<<< HEAD
 module Services
   class Sessions
     include HTTParty
@@ -18,5 +19,11 @@ module Services
       
       JSON.parse(response.body, symbolize_names: true)
     end
+=======
+class Session
+  include HTTParty
+
+  def self.login
+>>>>>>> a3a6f33 (Category class first layout)
   end
 end

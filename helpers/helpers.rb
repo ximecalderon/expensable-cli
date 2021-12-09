@@ -15,6 +15,7 @@ module Helpers
     ].join("\n")
   end
 
+<<<<<<< HEAD
 
   def get_string(label, required: false)
     input = ""
@@ -47,20 +48,36 @@ module Helpers
       break if options.include?(action) || (action.nil? && !required)
 
       puts "Invalid option"
+=======
+  def get_with_options(options_line1, options_line2 = nil)
+    puts options_line1.join(" | ")
+    puts options_line2.join(" | ") unless options_line2.nil?
+    print "> "
+    action, id = gets.chomp.split
+    
+    if !id.nil? && id.match(/^\d+$/)
+        [action, id.to_i]
+    else
+        [action, id]
+>>>>>>> a3a6f33 (Category class first layout)
     end
-
-    action.nil? && default ? [default] : [action, id]
   end
 
   def login_menu
     get_with_options(["login", "create_user", "exit"])
   end
 
-  def notes_menu
-    get_with_options(["create", "update", "delete", "toggle", "trash", "logout"])
+  def categories_menu
+    get_with_options(
+        ["create", "show ID", "update ID", "delete ID"],
+        ["add-to ID", "toggle", "next", "prev", "logout"]
+    )
   end
 
-  def trash_menu
-    get_with_options(["delete", "recover", "back"])
+  def transactions_menu
+    get_with_options(
+        ["add", "update ID", "delete ID"],
+        ["next", "prev", "back"]
+    )
   end
 end
