@@ -22,18 +22,34 @@ module Helpers
       input = gets.chomp
       break unless input.empty? && required
 
-      puts "Cannot be blank"
+      puts "#{label} can't be blank"
     end
+
+
     input.empty? ? nil : input
   end
 
+  
+  
+  
+  def user_form
+    email = get_string_regex("Email",/^\w*@\w*\.\w{3}$/, "Invalid format")
+    password = get_string_regex("Password",/^\w{6,}$/, "Minimum 6 characters")
+    first_name = get_string("First_name")
+    last_name = get_string("Last_name")
+    phone = get_string_regex("Phone",/(^[+]51\s{1}\d{9}$|^\d{9}$)/, "Required format: +51 111222333 or 111222333", optional: true)
+    { email: email, password: password, first_name: first_name, last_name: last_name, pho: phone }
+  end
+  
+  
+  
   def credentials_form
     email = get_string("Email", required: true)
     password = get_string("Password", required: true)
-
+    
     { email: email, password: password }
   end
-
+  
   def get_with_options(options1, options2 = nil)
     puts options1.join(" | ")
     puts options2.join(" | ") unless options2.nil?
@@ -42,7 +58,7 @@ module Helpers
     id = id.to_i if !id.nil? && id.match(/^\d+$/)
     [action, id]
   end
-
+  
   def get_string_regex(label, regex, prompt, optional: false)
     input = ""
     loop do
@@ -50,13 +66,14 @@ module Helpers
       input = gets.chomp
       break if input.empty? && optional
       break if input =~ regex
-
+      
       # break unless input.empty? && required
       puts prompt
     end
     input.empty? ? nil : input
   end
-
+  
+  
   def category_form
     name = get_string("Name", required: true)
     transaction_type = get_string_regex("transaction_type", /(^income$|^expense$)/, "Only income or expense")
