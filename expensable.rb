@@ -5,9 +5,11 @@ require_relative "services/user"
 require_relative "services/session"
 require_relative "services/transaction"
 require_relative "services/category"
+require_relative "handlers/session_handler"
 
 class ExpensableApp
   include Helpers
+  include SessionHandler
 
   def initialize
     @user = nil
@@ -19,12 +21,16 @@ class ExpensableApp
     puts welcome
     action = ""
     until action == "exit"
-      action = login_menu[0]
-
-      case action
-      when "login" then puts "login" # modificar
-      when "create_user" then puts "create_user" # modificar
-      when "exit" then puts goodbye
+      begin
+        action = login_menu[0]
+        case action
+        when "login" then login
+        when "create_user" then puts "create_user" # modificar
+        when "exit" then puts goodbye
+        end
+      rescue HTTParty::ResponseError => e
+        parsed_error = JSON.parse(e.message)
+        puts parsed_error["errors"]
       end
     end
   end
