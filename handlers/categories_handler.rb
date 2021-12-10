@@ -25,11 +25,36 @@ module CategoriesHandler
 
   def transactions_amount_sum(transactions)
     month_data = month_transactions(transactions)
-
     amounts = month_data.map do |transaction|
       transaction[:amount]
     end
     amounts.sum
+  end
+
+  def create_category
+    category_data = category_form
+    new_category = Services::Categories.create_category(@user[:token], category_data)
+    @categories << new_category
+  end
+
+  def update_category(id)
+    category_data = category_form
+    return if category_data.empty?
+
+    updated_category = Services::Categories.update_category(@user[:token], id, category_data)
+
+    found_category = @categories.find { |category| category[:id] == id }
+    found_category.update(updated_category)
+  end
+
+  def delete_category(id)
+    begin
+      Services::Categories.delete_category(@user[:token], id)
+    rescue HTTParty::ResponseError
+      puts "Not found"
+    end
+    found_category = @categories.find { |note| note[:id] == id }
+    @categories.delete(found_category)
   end
 
   def toggle

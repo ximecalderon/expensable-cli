@@ -4,11 +4,11 @@ require "date"
 require_relative "helpers/helpers"
 require_relative "services/user"
 require_relative "services/session"
-require_relative "handlers/session_handler"
 require_relative "services/categories"
-require_relative "handlers/categories_handler"
 require_relative "services/transactions"
+require_relative "handlers/categories_handler"
 require_relative "handlers/transactions_handler"
+require_relative "handlers/session_handler"
 
 class ExpensableApp
   include Helpers
@@ -51,10 +51,10 @@ class ExpensableApp
       puts categories_table
       action, id = categories_menu
       case action
-      when "create" then puts "create_note"
+      when "create" then create_category
       when "show" then transactions_page(id)
-      when "update" then puts "delete_note(id)"
-      when "delete" then puts "toggle(id)"
+      when "update" then  update_category(id.to_i)
+      when "delete" then  delete_category(id.to_i)
       when "add-to" then puts "add-to(id)"
       when "toggle" then toggle
       when "next" then next_month_categories
