@@ -38,12 +38,11 @@ module CategoriesHandler
   end
 
   def update_category(id)
+    found_category = find_category(id)
+    return puts "Invalid option" if found_category.nil?
+
     category_data = category_form
-    return if category_data.empty?
-
     updated_category = Services::Categories.update_category(@user[:token], id, category_data)
-
-    found_category = @categories.find { |category| category[:id] == id }
     found_category.update(updated_category)
   end
 
