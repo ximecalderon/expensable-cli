@@ -6,15 +6,17 @@ require_relative "services/user"
 require_relative "services/session"
 require_relative "services/categories"
 require_relative "services/transactions"
+require_relative "handlers/user_handler"
+require_relative "handlers/session_handler"
 require_relative "handlers/categories_handler"
 require_relative "handlers/transactions_handler"
-require_relative "handlers/session_handler"
 
 class ExpensableApp
   include Helpers
   include SessionHandler
   include CategoriesHandler
   include TransactionsHandler
+  include UserHandler
 
   def initialize
     @user = nil
@@ -32,7 +34,7 @@ class ExpensableApp
         action = login_menu[0]
         case action
         when "login" then login
-        when "create_user" then puts "create_user" # modificar
+        when "create_user" then create_user
         when "exit" then puts goodbye
         else puts "Invalid option"
         end

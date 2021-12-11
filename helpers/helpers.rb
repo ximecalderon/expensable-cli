@@ -25,12 +25,29 @@ module Helpers
       puts "#{label} can't be blank"
     end
 
-
+    # input
     input.empty? ? nil : input
   end
 
   
   
+  def get_string_regex(label,regex,prompt,optional: false)
+    input = ""
+    loop do
+      print "#{label}: "
+      input = gets.chomp
+      break if input.empty? && optional
+      break if input =~ regex 
+      # break unless input.empty? && required
+      puts prompt
+
+    end
+    input.empty? ? nil : input
+    # input
+
+end
+
+
   
   def user_form
     email = get_string_regex("Email",/^\w*@\w*\.\w{3}$/, "Invalid format")

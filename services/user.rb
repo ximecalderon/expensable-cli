@@ -1,5 +1,12 @@
+require "httparty"
+require "json"
+
 module Services
   class Users
+    include HTTParty
+
+    base_uri("https://expensable-api.herokuapp.com/")
+
     def self.signup(credentials)
       options = {
         headers: { "Content-Type": "application/json" },
