@@ -63,6 +63,13 @@ module Helpers
     { name: name, transaction_type: transaction_type }
   end
 
+  def transaction_form
+    amount = get_string_regex("Amount", /^[1-9][0-9]+$|^[1-9]$/, "Cannot be zero").to_i
+    date = get_string_regex("Date", /^\d{4}-\d{2}-\d{2}$/, "Required format: YYYY-MM-DD")
+    notes = get_string("Notes", required: false)
+    { amount: amount, date: date, notes: notes }
+  end
+
   def login_menu
     get_with_options(["login", "create_user", "exit"])
   end
@@ -79,5 +86,11 @@ module Helpers
       ["add", "update ID", "delete ID"],
       ["next", "prev", "back"]
     )
+  end
+
+  def find_category(category_id)
+    @categories.find do |category|
+      category[:id] == category_id
+    end
   end
 end

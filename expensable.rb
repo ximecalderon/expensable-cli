@@ -53,9 +53,9 @@ class ExpensableApp
       case action
       when "create" then create_category
       when "show" then transactions_page(id)
-      when "update" then  update_category(id.to_i)
-      when "delete" then  delete_category(id.to_i)
-      when "add-to" then puts "add-to(id)"
+      when "update" then  update_category(id)
+      when "delete" then  delete_category(id)
+      when "add-to" then add_transaction(id)
       when "toggle" then toggle
       when "next" then next_month_categories
       when "prev" then prev_month_categories
@@ -74,9 +74,9 @@ class ExpensableApp
         puts transactions_table(category_id)
         action, id = transactions_menu
         case action
-        when "add" then puts "add_transaction"
-        when "update ID" then puts "update_transaction(id)"
-        when "delete ID" then puts "delete_transaction(id)"
+        when "add" then add_transaction(category_id)
+        when "update" then update_transaction(category_id, id)
+        when "delete" then delete_transaction(category_id, id)
         when "next" then next_month_transactions(category_id)
         when "prev" then prev_month_transactions(category_id)
         when "back" then nil
