@@ -1,4 +1,3 @@
-# Start here. Happy coding!
 require "terminal-table"
 require "date"
 require_relative "helpers/helpers"
@@ -61,7 +60,7 @@ class ExpensableApp
       when "toggle" then toggle
       when "next" then next_month_categories
       when "prev" then prev_month_categories
-      when "logout" then puts welcome
+      when "logout" then logout
       else puts "Invalid option"
       end
     end
