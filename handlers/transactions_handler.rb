@@ -25,6 +25,7 @@ module TransactionsHandler
     transaction_data = transaction_form
     new_transaction = Services::Transactions.create_transaction(@user[:token], category_id, transaction_data)
     category[:transactions] << new_transaction
+    @transactions = category[:transactions]
   end
 
   def update_transaction(category_id, id)
