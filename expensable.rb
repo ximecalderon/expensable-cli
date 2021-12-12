@@ -90,6 +90,3 @@ class ExpensableApp
     end
   end
 end
-
-app = ExpensableApp.new
-app.start
