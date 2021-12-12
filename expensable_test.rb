@@ -10,6 +10,9 @@ class PeopleTest < Minitest::Test
     assert_raises(HTTParty::ResponseError) { Services::Sessions.login(credentials) }
   end
 
-  # def test_user_signup_error
-  # end
+  def test_user_signup_error
+    user_data = { email: "test3@mail.com", password: "123456" }
+
+    assert_raises(HTTParty::ResponseError) { Services::Users.signup(user_data) }
+  end
 end
